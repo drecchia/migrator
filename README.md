@@ -1,7 +1,7 @@
 docker/migrator
 =================
 
-Tool to migrate Docker images from Docker Hub or v1 registry to a v2 registry including Amazon Elastic Container Registry (ECR)
+Tool to migrate Docker images from v2 registry to a v2 registry including Amazon Elastic Container Registry (ECR)
 
 https://hub.docker.com/r/docker/migrator/
 
@@ -44,6 +44,7 @@ The following environment variables can be set:
   * `NO_LOGIN`
     * `true` - Skips `docker login` for both the v1 and v2 registries
     * `false` - (_Default_) Prompts user to login to the v1 and v2 registries
+  * `V1_REPO_IGNORE` - Repo regex to ignore
   * `V1_NO_LOGIN`
     * `true` - Skips `docker login` for the v1 registry
     * `false` - (_Default_) Prompts user to login to the v1 registry
@@ -114,6 +115,21 @@ docker run -it \
     -e V1_REGISTRY=v1.registry.fqdn \
     -e V2_REGISTRY=v2.registry.fqdn \
 docker/migrator
+
+docker run -it \
+    -v /var/run/docker.sock:/var/run/docker.sock \
+    -e V1_REGISTRY=registry.tools.deltatecnologia.com\:5000 \
+    -e V2_REGISTRY=027387253008.dkr.ecr.us-east-1.amazonaws.com \
+    -e V1_NO_LOGIN=true \
+    -e USE_INSECURE_CURL=true \
+    -v /etc/docker/certs.d:/etc/docker/certs.d:ro \
+    -e AWS_ACCESS_KEY_ID=AAAAAAAAAAAAAAAA \
+    -e AWS_SECRET_ACCESS_KEY=90wd9M4lrKg0knEzgnrCK35bifYBwIXVIIGN1Znv \
+    -e AWS_REGION=us-east-1 \
+    -e V1_PROTO=https \
+    -e MIGRATION_INCREMENT=5 \
+    -e V1_REPO_IGNORE="nominatim" \
+    docker/migrator
 ```
 
 ## How Migration Works
