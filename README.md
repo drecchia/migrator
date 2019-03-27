@@ -8,6 +8,8 @@ https://hub.docker.com/r/docker/migrator/
 ## Usage
 
 ```
+docker build .
+
 docker run -it \
     -v /var/run/docker.sock:/var/run/docker.sock \
     -e V1_REGISTRY=v1.registry.fqdn \
